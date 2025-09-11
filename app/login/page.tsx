@@ -1,56 +1,62 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useAuth } from "@/contexts/auth-context"
-import { useToast } from "@/hooks/use-toast"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useAuth } from "@/contexts/auth-context";
+import { useToast } from "@/hooks/use-toast";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
-  const { toast } = useToast()
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const { toast } = useToast();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
-      const success = await login(email, password)
+      const success = await login(email, password);
       if (success) {
         toast({
           title: "Welcome back!",
           description: "You have been successfully logged in.",
-        })
-        router.push("/")
+        });
+        router.push("/");
       } else {
         toast({
           title: "Login failed",
           description: "Invalid email or password. Please try again.",
           variant: "destructive",
-        })
+        });
       }
     } catch (error) {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -60,7 +66,9 @@ export default function LoginPage() {
           <Card>
             <CardHeader className="text-center">
               <CardTitle className="text-2xl">Welcome Back</CardTitle>
-              <CardDescription>Sign in to your Feesah Collections account</CardDescription>
+              <CardDescription>
+                Sign in to your Feesah Collections account
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -94,16 +102,13 @@ export default function LoginPage() {
               <div className="mt-6 text-center">
                 <p className="text-sm text-muted-foreground">
                   Don't have an account?{" "}
-                  <Link href="/register" className="text-primary hover:underline">
+                  <Link
+                    href="/register"
+                    className="text-primary hover:underline"
+                  >
                     Sign up
                   </Link>
                 </p>
-              </div>
-
-              <div className="mt-4 p-4 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground mb-2">Demo accounts:</p>
-                <p className="text-xs">Admin: admin@feesah.com / admin123</p>
-                <p className="text-xs">User: any email / any password</p>
               </div>
             </CardContent>
           </Card>
@@ -111,5 +116,5 @@ export default function LoginPage() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

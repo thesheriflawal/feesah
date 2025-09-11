@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Star, ShoppingCart } from "lucide-react"
-import Link from "next/link"
-import { useCart } from "@/contexts/cart-context"
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Star, ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { useCart } from "@/contexts/cart-context";
 
 // Sample products based on the catalog images
 const featuredProducts = [
@@ -64,26 +64,27 @@ const featuredProducts = [
     reviews: 28,
     badge: "Trending",
   },
-]
+];
 
 export function FeaturedProducts() {
-  const { addToCart } = useCart()
+  const { addToCart } = useCart();
 
   const handleAddToCart = (product: any) => {
     addToCart({
-      id: product.id,
+      id: product.id.toString(),
       name: product.name,
       price: product.price,
       image: product.image,
-      quantity: 1,
-    })
-  }
+    });
+  };
 
   return (
     <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Featured Products</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Featured Products
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Discover our most popular and highly-rated products
           </p>
@@ -104,10 +105,16 @@ export function FeaturedProducts() {
                       className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
                     />
                   </Link>
-                  <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">{product.badge}</Badge>
+                  <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">
+                    {product.badge}
+                  </Badge>
                   {product.originalPrice && (
-                    <Badge variant="destructive" className="absolute top-3 right-3">
-                      Save ₦{(product.originalPrice - product.price).toLocaleString()}
+                    <Badge
+                      variant="destructive"
+                      className="absolute top-3 right-3"
+                    >
+                      Save ₦
+                      {(product.originalPrice - product.price).toLocaleString()}
                     </Badge>
                   )}
                 </div>
@@ -125,7 +132,9 @@ export function FeaturedProducts() {
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
                           }`}
                         />
                       ))}
@@ -137,7 +146,9 @@ export function FeaturedProducts() {
 
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl font-bold text-primary">₦{product.price.toLocaleString()}</span>
+                      <span className="text-2xl font-bold text-primary">
+                        ₦{product.price.toLocaleString()}
+                      </span>
                       {product.originalPrice && (
                         <span className="text-sm text-muted-foreground line-through">
                           ₦{product.originalPrice.toLocaleString()}
@@ -146,7 +157,11 @@ export function FeaturedProducts() {
                     </div>
                   </div>
 
-                  <Button className="w-full" size="sm" onClick={() => handleAddToCart(product)}>
+                  <Button
+                    className="w-full"
+                    size="sm"
+                    onClick={() => handleAddToCart(product)}
+                  >
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     Add to Cart
                   </Button>
@@ -165,5 +180,5 @@ export function FeaturedProducts() {
         </div>
       </div>
     </section>
-  )
+  );
 }

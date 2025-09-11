@@ -1,44 +1,54 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Search, ShoppingCart, User, Menu, X, LogOut } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useAuth } from "@/contexts/auth-context"
-import { useCart } from "@/contexts/cart-context"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  Search,
+  ShoppingCart,
+  User,
+  Menu,
+  X,
+  LogOut,
+  Settings,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/auth-context";
+import { useCart } from "@/contexts/cart-context";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 interface HeaderProps {
-  onSearch?: (query: string) => void
+  onSearch?: (query: string) => void;
 }
 
 export function Header({ onSearch }: HeaderProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const { user, logout } = useAuth()
-  const { totalItems } = useCart()
-  const router = useRouter()
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { user, logout } = useAuth();
+  const { totalItems } = useCart();
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchQuery.trim()) {
       if (onSearch) {
-        onSearch(searchQuery.trim())
+        onSearch(searchQuery.trim());
       } else {
-        router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`)
+        router.push(
+          `/products?search=${encodeURIComponent(searchQuery.trim())}`
+        );
       }
     }
-  }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
@@ -47,14 +57,21 @@ export function Header({ onSearch }: HeaderProps) {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">F</span>
+              <span className="text-primary-foreground font-bold text-lg">
+                F
+              </span>
             </div>
-            <span className="text-xl font-bold text-foreground">Feesah Collections</span>
+            <span className="text-xl font-bold text-foreground">
+              Feesah Collections
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/products" className="text-foreground hover:text-primary transition-colors">
+            <Link
+              href="/products"
+              className="text-foreground hover:text-primary transition-colors"
+            >
               All Products
             </Link>
             <Link
@@ -63,10 +80,16 @@ export function Header({ onSearch }: HeaderProps) {
             >
               Electronics
             </Link>
-            <Link href="/products?category=home" className="text-foreground hover:text-primary transition-colors">
+            <Link
+              href="/products?category=home"
+              className="text-foreground hover:text-primary transition-colors"
+            >
               Home & Kitchen
             </Link>
-            <Link href="/products?category=beauty" className="text-foreground hover:text-primary transition-colors">
+            <Link
+              href="/products?category=beauty"
+              className="text-foreground hover:text-primary transition-colors"
+            >
               Beauty
             </Link>
             <Link
@@ -96,7 +119,11 @@ export function Header({ onSearch }: HeaderProps) {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="hidden md:flex">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hidden md:flex"
+                  >
                     <User className="w-5 h-5" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -107,6 +134,17 @@ export function Header({ onSearch }: HeaderProps) {
                   <DropdownMenuItem asChild>
                     <Link href="/orders">My Orders</Link>
                   </DropdownMenuItem>
+                  {user.role === "admin" && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin">
+                          <Settings className="w-4 h-4 mr-2" />
+                          Admin Panel
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logout}>
                     <LogOut className="w-4 h-4 mr-2" />
@@ -115,7 +153,12 @@ export function Header({ onSearch }: HeaderProps) {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button variant="ghost" size="icon" className="hidden md:flex" asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden md:flex"
+                asChild
+              >
                 <Link href="/login">
                   <User className="w-5 h-5" />
                 </Link>
@@ -134,8 +177,17 @@ export function Header({ onSearch }: HeaderProps) {
             </Button>
 
             {/* Mobile Menu Button */}
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </Button>
           </div>
         </div>
@@ -155,7 +207,10 @@ export function Header({ onSearch }: HeaderProps) {
                 />
               </form>
               <nav className="flex flex-col space-y-2">
-                <Link href="/products" className="text-foreground hover:text-primary transition-colors py-2">
+                <Link
+                  href="/products"
+                  className="text-foreground hover:text-primary transition-colors py-2"
+                >
                   All Products
                 </Link>
                 <Link
@@ -185,19 +240,42 @@ export function Header({ onSearch }: HeaderProps) {
               </nav>
               {user ? (
                 <div className="flex flex-col space-y-2 pt-2 border-t border-border">
-                  <Link href="/profile" className="text-foreground hover:text-primary transition-colors py-2">
+                  <Link
+                    href="/profile"
+                    className="text-foreground hover:text-primary transition-colors py-2"
+                  >
                     Profile
                   </Link>
-                  <Link href="/orders" className="text-foreground hover:text-primary transition-colors py-2">
+                  <Link
+                    href="/orders"
+                    className="text-foreground hover:text-primary transition-colors py-2"
+                  >
                     My Orders
                   </Link>
-                  <Button variant="outline" onClick={logout} className="justify-start bg-transparent">
+                  {user.role === "admin" && (
+                    <Link
+                      href="/admin"
+                      className="text-foreground hover:text-primary transition-colors py-2"
+                    >
+                      <Settings className="w-4 h-4 mr-2 inline" />
+                      Admin Panel
+                    </Link>
+                  )}
+                  <Button
+                    variant="outline"
+                    onClick={logout}
+                    className="justify-start bg-transparent"
+                  >
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
                   </Button>
                 </div>
               ) : (
-                <Button variant="outline" className="justify-start bg-transparent" asChild>
+                <Button
+                  variant="outline"
+                  className="justify-start bg-transparent"
+                  asChild
+                >
                   <Link href="/login">
                     <User className="w-4 h-4 mr-2" />
                     Login / Register
@@ -209,5 +287,5 @@ export function Header({ onSearch }: HeaderProps) {
         )}
       </div>
     </header>
-  )
+  );
 }
