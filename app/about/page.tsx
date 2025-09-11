@@ -51,7 +51,7 @@ export default function AboutPage() {
           <div className="animate-slide-in-left">
             <Card className="overflow-hidden hover-lift">
               <CardContent className="p-0">
-                <div className="relative h-96 bg-gradient-to-br from-primary/20 to-secondary/20">
+                <div className="relative w-full h-80 md:h-96 bg-gradient-to-br from-primary/20 to-secondary/20">
                   <Swiper
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={0}
@@ -68,18 +68,23 @@ export default function AboutPage() {
                     }}
                     navigation={true}
                     className="w-full h-full founder-swiper"
+                    watchSlidesProgress={true}
+                    watchOverflow={true}
                   >
                     {founderImages.map((image, index) => (
-                      <SwiperSlide key={index}>
-                        <div className="w-full h-full flex items-center justify-center p-4">
-                          <div className="relative w-full h-full max-w-md">
+                      <SwiperSlide
+                        key={index}
+                        className="flex items-center justify-center"
+                      >
+                        <div className="relative w-full h-full max-w-full max-h-full p-4">
+                          <div className="relative w-full h-full">
                             <Image
                               src={image.src}
                               alt={image.alt}
                               fill
                               className="rounded-lg object-contain"
                               priority={index === 0}
-                              sizes="(max-width: 768px) 100vw, 400px"
+                              sizes="(max-width: 640px) 90vw, (max-width: 768px) 80vw, 400px"
                             />
                           </div>
                         </div>
@@ -207,8 +212,28 @@ export default function AboutPage() {
 
       {/* Custom CSS for Swiper styling */}
       <style jsx global>{`
+        .founder-swiper {
+          width: 100% !important;
+          height: 100% !important;
+          overflow: hidden;
+        }
+
+        .founder-swiper .swiper-wrapper {
+          height: 100% !important;
+        }
+
+        .founder-swiper .swiper-slide {
+          width: 100% !important;
+          height: 100% !important;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
         .founder-swiper .swiper-pagination {
           bottom: 10px;
+          z-index: 10;
         }
 
         .founder-swiper .swiper-pagination-bullet {
@@ -224,15 +249,39 @@ export default function AboutPage() {
         .founder-swiper .swiper-button-prev {
           color: white;
           background: rgba(0, 0, 0, 0.5);
-          width: 40px;
-          height: 40px;
+          width: 35px;
+          height: 35px;
           border-radius: 50%;
-          margin-top: -20px;
+          margin-top: -17px;
+          z-index: 10;
         }
 
         .founder-swiper .swiper-button-next:after,
         .founder-swiper .swiper-button-prev:after {
-          font-size: 16px;
+          font-size: 14px;
+        }
+
+        /* Mobile specific styles */
+        @media (max-width: 640px) {
+          .founder-swiper .swiper-button-next,
+          .founder-swiper .swiper-button-prev {
+            width: 30px;
+            height: 30px;
+            margin-top: -15px;
+          }
+
+          .founder-swiper .swiper-button-next:after,
+          .founder-swiper .swiper-button-prev:after {
+            font-size: 12px;
+          }
+
+          .founder-swiper .swiper-button-next {
+            right: 5px;
+          }
+
+          .founder-swiper .swiper-button-prev {
+            left: 5px;
+          }
         }
 
         .animate-fade-in-up {
